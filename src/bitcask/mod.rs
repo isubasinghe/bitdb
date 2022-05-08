@@ -1,12 +1,7 @@
-use serde::{ser, Serialize, Deserialize};
-pub mod entry;
-pub mod keydir;
 mod cmap;
 mod ctrie;
-
-pub struct Bitcask {
-    name: String,
-}
-
-
-
+mod memstore;
+pub mod entry;
+pub mod keydir;
+pub mod bitcask;
+pub mod dirman;

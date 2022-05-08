@@ -1,3 +1,14 @@
+pub enum DataType {
+    Str,
+    UInt32,
+    Int32,
+    UInt64, 
+    Int64,
+    Float,
+    Double,
+    Bytes,
+}
+
 pub struct Data<V> 
 
 {
