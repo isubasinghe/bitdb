@@ -21,7 +21,7 @@ impl<V: Serialize> Data<V>
 where
     for<'a> V: serde::de::Deserialize<'a>,
 {
-    fn write(&self, writer: &mut BufWriter<File>) -> Result<(u64, u64), errors::BitcaskError> {
+    pub fn write(&self, writer: &mut BufWriter<File>) -> Result<(u64, u64), errors::BitcaskError> {
         let timestamp = unsafe { std::mem::transmute::<u128, [u8; 16]>(self.timestamp) };
 
         let keysize = self.key.len() as u64;
@@ -39,7 +39,7 @@ where
         Ok((pos, value_size))
     }
 
-    fn read_entry(pos: u64, reader: &mut BufReader<File>) -> Result<(u128, String, V), errors::BitcaskError> {
+    pub fn read_entry(pos: u64, reader: &mut BufReader<File>) -> Result<(u128, String, V), errors::BitcaskError> {
         reader.seek(SeekFrom::Start(pos))?;
         let mut timedata = [0 as u8; 16];
         reader.read_exact(&mut timedata)?;
@@ -64,14 +64,14 @@ where
     }
 
     #[inline(always)]
-    fn read_value_at_bytes(pos: u64, vsize: u64, reader: &mut BufReader<File>) -> Result<Vec<u8>, errors::BitcaskError> {
+    pub fn read_value_at_bytes(pos: u64, vsize: u64, reader: &mut BufReader<File>) -> Result<Vec<u8>, errors::BitcaskError> {
         reader.seek(SeekFrom::Start(pos))?;
         let mut value = vec![0u8; vsize as usize];
         reader.read_exact(&mut value)?;
         Ok(value)
     }
 
-    fn read_value_at(pos: u64, vsize: u64, reader: &mut BufReader<File>) -> Result<V, errors::BitcaskError> {
+    pub fn read_value_at(pos: u64, vsize: u64, reader: &mut BufReader<File>) -> Result<V, errors::BitcaskError> {
         let value: Vec<u8> = Data::<V>::read_value_at_bytes(pos, vsize, reader)?;
         let d = deserialize::<V>(&value)?;
         Ok(d)

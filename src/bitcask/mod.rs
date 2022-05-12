@@ -1,5 +1,6 @@
-mod cmap;
-mod ctrie;
+pub mod cmap;
+pub mod ctrie;
+pub mod dmap;
 pub mod memstore;
 pub mod entry;
 pub mod keydir;

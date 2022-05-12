@@ -3,6 +3,7 @@ use std::any::Any;
 #[derive(Debug)]
 pub enum BitcaskError {
     InternalError(Box<dyn Any>), 
+    NonExistentKey()
 }
 
 
