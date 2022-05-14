@@ -4,6 +4,7 @@ use bitcask::dmap::DMap;
 use bitcask::dirman::Dirman;
 use bitcask::errors::BitcaskError;
 use std::time::Instant;
+
 fn main() -> Result<(), BitcaskError> {
     let mut dman = Dirman::<DMap>::open("/tmp/".to_string())?;
     let start = Instant::now(); 
