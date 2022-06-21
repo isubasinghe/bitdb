@@ -1,4 +1,9 @@
 # bitdb
+
+
+## Performance 
+As expected on such a performance oriented (memory based) database, I was able to get 100,000 inserts in just 600ms. 
+
 ## TODO 
   * Migrate to CTrie or HAMT based on Ideal Hash Trees paper for in memory store 
   * This implementation can be used to support prefixes in keys by making slight modifications in how the insertion/search process works. Prefixes of keys are important because we can use this for searching by prefix
