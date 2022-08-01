@@ -1,8 +1,8 @@
-use std::any::Any;
+use std::error::Error;
 
 #[derive(Debug)]
 pub enum BitcaskError {
-    InternalError(Box<dyn Any>), 
+    InternalError(Box<dyn Error>), 
     NonExistentKey()
 }
 
