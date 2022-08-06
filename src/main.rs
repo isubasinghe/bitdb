@@ -1,5 +1,5 @@
 mod bitcask;
-use bitcask::memstore::MemStore;
+mod network;
 use bitcask::dmap::DMap;
 use bitcask::dirman::Dirman;
 use bitcask::errors::BitcaskError;
