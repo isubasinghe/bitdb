@@ -10,3 +10,7 @@ rkyv = "0.7.38"
 bincode = "1.3.3"
 serde = { version ="1.0.137", features=["derive"] }
 dashmap = "5.3.3"
+sqlparser = "0.21.0"
+openraft = "0.7.1"
+async-trait = "0.1.57"
+postgres-protocol="0.6.4"
