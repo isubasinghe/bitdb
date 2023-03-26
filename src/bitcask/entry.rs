@@ -39,7 +39,10 @@ where
         Ok((pos, value_size))
     }
 
-    pub fn read_entry(pos: u64, reader: &mut BufReader<File>) -> Result<(u128, String, V), errors::BitcaskError> {
+    pub fn read_entry(
+        pos: u64,
+        reader: &mut BufReader<File>,
+    ) -> Result<(u128, String, V), errors::BitcaskError> {
         reader.seek(SeekFrom::Start(pos))?;
         let mut timedata = [0 as u8; 16];
         reader.read_exact(&mut timedata)?;
@@ -64,18 +67,25 @@ where
     }
 
     #[inline(always)]
-    pub fn read_value_at_bytes(pos: u64, vsize: u64, reader: &mut BufReader<File>) -> Result<Vec<u8>, errors::BitcaskError> {
+    pub fn read_value_at_bytes(
+        pos: u64,
+        vsize: u64,
+        reader: &mut BufReader<File>,
+    ) -> Result<Vec<u8>, errors::BitcaskError> {
         reader.seek(SeekFrom::Start(pos))?;
         let mut value = vec![0u8; vsize as usize];
         reader.read_exact(&mut value)?;
         Ok(value)
     }
 
-    pub fn read_value_at(pos: u64, vsize: u64, reader: &mut BufReader<File>) -> Result<V, errors::BitcaskError> {
+    pub fn read_value_at(
+        pos: u64,
+        vsize: u64,
+        reader: &mut BufReader<File>,
+    ) -> Result<V, errors::BitcaskError> {
         let value: Vec<u8> = Data::<V>::read_value_at_bytes(pos, vsize, reader)?;
         let d = deserialize::<V>(&value)?;
         Ok(d)
-        
     }
 }
 
@@ -95,12 +105,13 @@ mod tests {
         let mydata = super::Data {
             timestamp: original_timestamp,
             key: original_key.to_owned(),
-            value: original_value.to_owned()
+            value: original_value.to_owned(),
         };
         let (pos, sz) = mydata.write(&mut writer).unwrap();
         println!("POS - {}", pos);
         let mut reader = BufReader::new(file_copy);
-        let (timestamp, key, value): (_, _, String) = super::Data::read_entry(0, &mut reader).unwrap();
+        let (timestamp, key, value): (_, _, String) =
+            super::Data::read_entry(0, &mut reader).unwrap();
         assert!(timestamp == original_timestamp);
         assert!(key == original_key);
         assert!(value == original_value);

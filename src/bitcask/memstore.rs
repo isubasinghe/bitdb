@@ -1,8 +1,8 @@
 #[derive(Clone)]
 pub struct ValueMetadata {
     pub file_id: String,
-    pub value_size: u64, 
-    pub value_pos: u64, 
+    pub value_size: u64,
+    pub value_pos: u64,
     pub timestamp: u128,
 }
 

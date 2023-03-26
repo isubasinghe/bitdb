@@ -1,7 +1,7 @@
 use crate::bitcask::bitcask::Bitcask;
 use crate::bitcask::errors::BitcaskError;
 use crate::bitcask::memstore::MemStore;
-use serde::{Serialize, Deserialize};
+use serde::{Serialize};
 
 pub struct Dirman<T>
 where
@@ -25,20 +25,19 @@ impl<T: MemStore> Dirman<T> {
         })
     }
 
-    pub fn put<V>(&mut self, key: String, value: V) -> Result<(), BitcaskError> 
-        where 
-            for<'b> V: serde::de::Deserialize<'b>,
-            V: Serialize,
+    pub fn put<V>(&mut self, key: String, value: V) -> Result<(), BitcaskError>
+    where
+        for<'b> V: serde::de::Deserialize<'b>,
+        V: Serialize,
     {
         self.current_bitcask.put(key, value)
     }
-    
-    pub fn get_as<V>(&mut self, key: String) -> Result<V, BitcaskError> 
-        where 
-            for<'b> V: serde::de::Deserialize<'b>,
-            V: Serialize,
+
+    pub fn get_as<V>(&mut self, key: String) -> Result<V, BitcaskError>
+    where
+        for<'b> V: serde::de::Deserialize<'b>,
+        V: Serialize,
     {
         self.current_bitcask.get_as(key)
     }
-
 }

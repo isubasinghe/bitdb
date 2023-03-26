@@ -1,3 +1,6 @@
+use crate::bitcask::entry::Data;
+use crate::bitcask::errors;
+use crate::bitcask::memstore::MemStore;
 use bincode::serialize;
 use serde::Serialize;
 use std::fs::{File, OpenOptions};
@@ -6,9 +9,6 @@ use std::io::Seek;
 use std::io::{BufReader, BufWriter};
 use std::io::{Error, SeekFrom};
 use std::time::{SystemTime, UNIX_EPOCH};
-use crate::bitcask::entry::Data;
-use crate::bitcask::memstore::MemStore;
-use crate::bitcask::errors;
 
 use super::memstore::ValueMetadata;
 
@@ -47,7 +47,6 @@ where
         })
     }
 
-
     pub fn get(&mut self, key: String) -> Result<Vec<u8>, errors::BitcaskError> {
         let metadata = self.mem_store.get_metadata(key);
         let metadata = match metadata {
@@ -69,9 +68,9 @@ where
             .duration_since(UNIX_EPOCH)
             .unwrap()
             .as_millis();
-        let keysize = key.len() as u64;
+        let _keysize = key.len() as u64;
         let value_bytes = serialize(&value)?;
-        let value_size = value_bytes.len() as u64;
+        let _value_size = value_bytes.len() as u64;
 
         let data: Data<V> = Data {
             timestamp,
@@ -79,24 +78,29 @@ where
             value,
         };
         let (pos, value_sz) = data.write(&mut self.writer)?;
-        let metadata = ValueMetadata{ file_id: self.name.to_owned(), timestamp, value_pos: pos, value_size: value_sz};
+        let metadata = ValueMetadata {
+            file_id: self.name.to_owned(),
+            timestamp,
+            value_pos: pos,
+            value_size: value_sz,
+        };
         self.mem_store.put(key, metadata);
         Ok(())
     }
 
-    pub fn get_as<V>(&mut self, key: String) -> Result<V, errors::BitcaskError> 
-        where 
-            for<'b> V: serde::de::Deserialize<'b>,
-            V: Serialize
+    pub fn get_as<V>(&mut self, key: String) -> Result<V, errors::BitcaskError>
+    where
+        for<'b> V: serde::de::Deserialize<'b>,
+        V: Serialize,
     {
         let val = match self.mem_store.get_metadata(key) {
-            Some(val) => val, 
-            None => return Err(errors::BitcaskError::NonExistentKey())
+            Some(val) => val,
+            None => return Err(errors::BitcaskError::NonExistentKey()),
         };
         Data::<V>::read_value_at(val.value_pos, val.value_size, &mut self.reader)
     }
 
-    pub fn delete(key: String) {
+    pub fn delete(_key: String) {
         //TODO: finish off tombstombing
         todo!();
     }
@@ -109,5 +113,4 @@ where
     pub fn done(self) -> T {
         self.mem_store
     }
-
 }

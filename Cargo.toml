@@ -14,3 +14,4 @@ sqlparser = "0.21.0"
 openraft = "0.7.1"
 async-trait = "0.1.57"
 postgres-protocol="0.6.4"
+tokio = { version = "1.26.0", features = ["full"] }

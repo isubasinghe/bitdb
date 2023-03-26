@@ -1,11 +1,6 @@
-pub struct Keydir {
+pub struct Keydir {}
 
-}
-
-impl Keydir {
-    
-}
-
+impl Keydir {}
 
 unsafe impl Send for Keydir {}
 unsafe impl Sync for Keydir {}

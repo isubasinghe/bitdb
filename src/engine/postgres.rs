@@ -1,30 +1,22 @@
-use async_trait::async_trait;
 use crate::engine::engine::*;
-use sqlparser::ast::Statement;
+use crate::engine::sql::CreateTable;
+use async_trait::async_trait;
+use sqlparser::ast::{Statement};
 
-pub struct PGEngine {
 
-}
+pub struct PGEngine {}
 
 #[async_trait]
 impl StorageEngine for PGEngine {
+    async fn execute_create(_create_table: CreateTable) {}
+}
 
-    async fn execute_create(stmt: Statement) {
+impl PGEngine {
+    pub fn execute(stmt: Statement) {
+        match &stmt {
+            Statement::Query(_) => {}
+            Statement::CreateTable { .. } => {}
+            _ => {}
+        }
     }
-
-    async fn get_table_definition(name: String) {
-    }
-
-    async fn execute_insert(stmt: Statement) {
-    }
-
-    async fn execute_select(stmt: Statement) {
-    }
-
-    async fn execute_delete(stmt: Statement) {
-    }
-
-    async fn execute_join(stmt: Statement) {
-    }
-
 }

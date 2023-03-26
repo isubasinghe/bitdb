@@ -1,5 +1,1 @@
-pub struct CTrie {
-    
-}
-
-
+pub struct CTrie {}
